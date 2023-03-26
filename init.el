@@ -1,4 +1,4 @@
-;;; init.el --- Load the full configuration -*- lexical-binding: t -*-
+;;; Initu.el --- Load the full configuration -*- lexical-binding: t -*-
 ;;; Commentary:
 
 ;; This file bootstraps the configuration, which is divided into a number of other files.
@@ -77,7 +77,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(undo-tree google-this rainbow-delimiters dashboard mwim counsel ivy use-package gnu-elpa-keyring-update)))
+   '(markdown-mode counsel-projectile projectile undo-tree google-this rainbow-delimiters dashboard mwim counsel ivy use-package gnu-elpa-keyring-update)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -122,15 +122,15 @@
 ;;   :init (global-undo-tree-mode))
 
 (use-package dashboard
- :ensure t
- :config
- (setq dashboard-banner-logo-title "Welcome to Emacs!")
- ;; (setq dashboard-projects-backend 'projectile)
- (setq dashboard-startup-banner 'official)
- (setq dashboard-items '((recents  . 5)
-		  (bookmarks . 5)
-		  (projects . 10)))
- (dashboard-setup-startup-hook))
+  :ensure t
+  :config
+  (setq dashboard-banner-logo-title "Welcome to Emacs!")
+  ;; (setq dashboard-projects-backend 'projectile)
+  (setq dashboard-startup-banner 'official)
+  (setq dashboard-items '((recents  . 5)
+			  (bookmarks . 5)
+		          (projects . 10)))
+  (dashboard-setup-startup-hook))
 
 (use-package rainbow-delimiters
   :ensure t
@@ -140,3 +140,15 @@
 ;;   :ensure t
 ;;   :init
 ;;   (google-this-mode))
+
+(use-package projectile
+  :ensure t
+  :bind (("C-c p" . projectile-command-map))
+  :config
+  (setq projectile-mode-line "Projectile")
+  (setq projectile-track-known-projects-automatically nil))
+
+(use-package counsel-projectile
+  :ensure t
+  :after (projectile)
+  :init (counsel-projectile-mode))
