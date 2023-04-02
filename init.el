@@ -1,4 +1,4 @@
-;;; Initu.el --- Load the full configuration -*- lexical-binding: t -*-
+;;; init.el --- Load the full configuration -*- lexical-binding: t -*-
 ;;; Commentary:
 
 ;; This file bootstraps the configuration, which is divided into a number of other files.
@@ -77,7 +77,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(markdown-mode counsel-projectile projectile undo-tree google-this rainbow-delimiters dashboard mwim counsel ivy use-package gnu-elpa-keyring-update)))
+   '(treemacs-projectile treemacs counsel-projectile projectile undo-tree google-this rainbow-delimiters dashboard mwim counsel ivy use-package gnu-elpa-keyring-update)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -122,24 +122,19 @@
 ;;   :init (global-undo-tree-mode))
 
 (use-package dashboard
-  :ensure t
-  :config
-  (setq dashboard-banner-logo-title "Welcome to Emacs!")
-  ;; (setq dashboard-projects-backend 'projectile)
-  (setq dashboard-startup-banner 'official)
-  (setq dashboard-items '((recents  . 5)
-			  (bookmarks . 5)
-		          (projects . 10)))
-  (dashboard-setup-startup-hook))
+ :ensure t
+ :config
+ (setq dashboard-banner-logo-title "Welcome to Emacs!")
+ ;; (setq dashboard-projects-backend 'projectile)
+ (setq dashboard-startup-banner 'official)
+ (setq dashboard-items '((recents  . 5)
+		  (bookmarks . 5)
+		  (projects . 10)))
+ (dashboard-setup-startup-hook))
 
 (use-package rainbow-delimiters
   :ensure t
   :hook (prog-mode . rainbow-delimiters-mode))
-
-;; (use-package google-this
-;;   :ensure t
-;;   :init
-;;   (google-this-mode))
 
 (use-package projectile
   :ensure t
@@ -152,3 +147,27 @@
   :ensure t
   :after (projectile)
   :init (counsel-projectile-mode))
+
+(use-package treemacs
+  :ensure t
+  :defer t
+  :config
+  (treemacs-tag-follow-mode)
+  :bind
+  (:map global-map
+        ("M-0"       . treemacs-select-window)
+        ("C-x t 1"   . treemacs-delete-other-windows)
+        ("C-x t t"   . treemacs)
+        ("C-x t B"   . treemacs-bookmark)
+        ;; ("C-x t C-t" . treemacs-find-file)
+        ("C-x t M-t" . treemacs-find-tag))
+  (:map treemacs-mode-map
+	("/" . treemacs-advanced-helpful-hydra)))
+
+(use-package treemacs-projectile
+  :ensure t
+  :after (treemacs projectile))
+
+;; (use-package lsp-treemacs
+;;   :ensure t
+;;   :after (treemacs lsp))
