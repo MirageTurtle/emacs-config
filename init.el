@@ -71,13 +71,14 @@
 (provide 'init)
 
 ;;; init.el ends here.
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(treemacs-projectile treemacs counsel-projectile projectile undo-tree google-this rainbow-delimiters dashboard mwim counsel ivy use-package gnu-elpa-keyring-update)))
+   '(company-jedi lsp-treemacs lsp-ivy lsp-mode flycheck company treemacs-projectile treemacs counsel-projectile projectile undo-tree google-this rainbow-delimiters dashboard mwim counsel ivy use-package gnu-elpa-keyring-update)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -111,26 +112,47 @@
    :map minibuffer-local-map
    ("C-r" . counsel-minibuffer-history)))
 
-(use-package mwim
+;; windmove
+(windmove-default-keybindings)
+(setq windmove-wrap-around t)
+
+;; Program for all
+(use-package company
   :ensure t
+  :init (global-company-mode)
+  :config
+  (setq company-minimum-prefix-length 1)
+  (setq company-tooltip-align-annotations t)
+  (setq company-idle-delay 0.0)
+  (setq company-show-numbers t)
+  (setq company-selection-wrap-around t)
+  (setq company-transformers '(company-sort-by-occurrence)))
+
+(use-package flycheck
+  :ensure t
+  :config
+  (setq truncate-lines nil)
+  :hook
+  (prog-mode . flycheck-mode))
+
+(use-package lsp-mode
+  :ensure t
+  :init
+  ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+  (setq lsp-keymap-prefix "C-c l"
+	lsp-file-watch-threshold 500)
+  :hook 
+  (lsp-mode . lsp-enable-which-key-integration) ; which-key integration
+  :commands (lsp lsp-deferred)
+  :config
+  (setq lsp-completion-provider :none)
+  (setq lsp-headerline-breadcrumb-enable t)
   :bind
-  ("C-a" . mwim-beginning-of-code-or-line)
-  ("C-e" . mwim-end-of-code-or-line))
+  ("C-c l s" . lsp-ivy-workspace-symbol))
 
-;; (use-package undo-tree
-;;   :ensure t
-;;   :init (global-undo-tree-mode))
-
-(use-package dashboard
- :ensure t
- :config
- (setq dashboard-banner-logo-title "Welcome to Emacs!")
- ;; (setq dashboard-projects-backend 'projectile)
- (setq dashboard-startup-banner 'official)
- (setq dashboard-items '((recents  . 5)
-		  (bookmarks . 5)
-		  (projects . 10)))
- (dashboard-setup-startup-hook))
+(use-package lsp-ivy
+  :ensure t
+  :after (lsp-mode))
 
 (use-package rainbow-delimiters
   :ensure t
@@ -168,6 +190,29 @@
   :ensure t
   :after (treemacs projectile))
 
-;; (use-package lsp-treemacs
-;;   :ensure t
-;;   :after (treemacs lsp))
+(use-package lsp-treemacs
+  :ensure t
+  :after (treemacs lsp))
+
+;; Program for Python
+(use-package company-jedi
+  :ensure t
+  :after (company-mode))
+
+;; Others
+(use-package mwim
+  :ensure t
+  :bind
+  ("C-a" . mwim-beginning-of-code-or-line)
+  ("C-e" . mwim-end-of-code-or-line))
+
+(use-package dashboard
+ :ensure t
+ :config
+ (setq dashboard-banner-logo-title "Welcome to Emacs!")
+ ;; (setq dashboard-projects-backend 'projectile)
+ (setq dashboard-startup-banner 'official)
+ (setq dashboard-items '((recents  . 5)
+		  (bookmarks . 5)
+		  (projects . 10)))
+ (dashboard-setup-startup-hook))
