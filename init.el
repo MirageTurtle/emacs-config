@@ -78,7 +78,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(company-jedi lsp-treemacs lsp-ivy lsp-mode flycheck company treemacs-projectile treemacs counsel-projectile projectile undo-tree google-this rainbow-delimiters dashboard mwim counsel ivy use-package gnu-elpa-keyring-update)))
+   '(json-mode multiple-cursors smart-tabs-mode wgrep company-jedi lsp-treemacs lsp-ivy lsp-mode flycheck company treemacs-projectile treemacs counsel-projectile projectile undo-tree google-this rainbow-delimiters dashboard mwim counsel ivy use-package gnu-elpa-keyring-update)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -193,6 +193,26 @@
 (use-package lsp-treemacs
   :ensure t
   :after (treemacs lsp))
+
+;; (use-package smart-tabs-mode
+;;   :ensure t)
+;; (smart-tabs-insinuate 'python)
+
+(use-package multiple-cursors
+  :ensure t
+  :bind (("C->"           . mc/mark-next-like-this)
+         ("C-<"           . mc/mark-previous-like-this)
+         ("C-M->"         . mc/skip-to-next-like-this)
+         ("C-M-<"         . mc/skip-to-previous-like-this)
+         ("C-c C-<"       . mc/mark-all-like-this)
+         ("C-S-<mouse-1>" . mc/add-cursor-on-click)
+         :map mc/keymap
+         ("C-|" . mc/vertical-align-with-space))
+  :config
+  (setq mc/insert-numbers-default 1))
+
+(use-package json-mode
+  :ensure t)
 
 ;; Program for Python
 (use-package company-jedi
