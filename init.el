@@ -40,7 +40,8 @@
 
 ;; Global Key bind
 (global-set-key (kbd "RET") 'newline-and-indent)
-(global-set-key (kbd "C-c '") 'comment-or-uncomment-region)
+;; (global-set-key (kbd "C-c '") 'comment-or-uncomment-region)
+(global-set-key (kbd "C-c ;") 'comment-line)
 ;; Didn't work
 ;; (global-set-key (kbd "C-h") 'view-order-manuals)
 ;; (global-set-key (kbd "C-SPC") 'set-mark-command)
@@ -78,7 +79,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(json-mode multiple-cursors smart-tabs-mode wgrep company-jedi lsp-treemacs lsp-ivy lsp-mode flycheck company treemacs-projectile treemacs counsel-projectile projectile undo-tree google-this rainbow-delimiters dashboard mwim counsel ivy use-package gnu-elpa-keyring-update)))
+   '(yaml-pro json-mode multiple-cursors smart-tabs-mode wgrep company-jedi lsp-treemacs lsp-ivy lsp-mode flycheck company treemacs-projectile treemacs counsel-projectile projectile undo-tree google-this rainbow-delimiters dashboard mwim counsel ivy use-package gnu-elpa-keyring-update)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -213,6 +214,16 @@
 
 (use-package json-mode
   :ensure t)
+
+(use-package yaml-mode
+  :ensure t)
+
+(use-package yaml-pro
+  :ensure t
+  ;; :after (yaml-mode)
+  :config
+  (add-hook 'yaml-mode-hook #'yaml-pro-mode))
+  
 
 ;; Program for Python
 (use-package company-jedi
